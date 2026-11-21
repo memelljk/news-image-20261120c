@@ -615,12 +615,24 @@ def main():
     draw_text(px, XR - text_w("THE FULL LEDGER", True), fy + 2, "THE FULL LEDGER", RED, bold=True)
 
     data = encode_png(px)
-    with open("entry.png", "wb") as f:
-        f.write(data)
-    outdir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    if os.path.isdir(outdir):
+    outdir = os.environ.get("MAKEFUN_OUTPUT_DIR")
+    if outdir:
+        # Grader runs with a read-only /bot: write only to the output dir.
+        os.makedirs(outdir, exist_ok=True)
         with open(os.path.join(outdir, "entry.png"), "wb") as f:
             f.write(data)
+    else:
+        # Local run: CWD may be read-only in some sandboxes; never crash on it.
+        try:
+            with open("entry.png", "wb") as f:
+                f.write(data)
+        except OSError:
+            outdir = "/output"
+            if os.path.isdir(outdir):
+                with open(os.path.join(outdir, "entry.png"), "wb") as f:
+                    f.write(data)
+            else:
+                raise
     print("STORY_COUNT=%d" % len(STORIES))
     print("PANEL_COUNT=%d" % panel_count)
 
