@@ -517,7 +517,7 @@ def main():
     line(px, X0, 59, XR, 59, INK, 1)
 
     # ---- hero row
-    hy, hh = 64, 162
+    hy, hh = 64, 154
     hw = (XR - X0 - 3 * 8) // 4
     for i, (reg, head, deck, src) in enumerate(HEROES):
         x = X0 + i * (hw + 8)
@@ -553,7 +553,7 @@ def main():
     def block_height(items):
         hgt = 18
         for it in items:
-            hgt += 46 if it[1] in PANEL_KIND else 22
+            hgt += 44 if it[1] in PANEL_KIND else 22
         return hgt
 
     for ci, blocks in enumerate(columns):
@@ -580,8 +580,8 @@ def main():
                     dl = wrap(deck, tw // 6 - 2)
                     for j, ln in enumerate(dl[:2]):
                         draw_text(px, tx, y + 12 + j * 11, ln, (52, 50, 44))
-                    draw_text(px, tx, y + 35, src.upper() + " | 20 NOV", col, bold=True)
-                    y += ph + 4
+                    draw_text(px, tx, y + 33, src.upper() + " | 20 NOV", col, bold=True)
+                    y += ph + 2
                 else:
                     tag = src.upper() + " 20NOV"
                     limit = (col_w - text_w(tag, True) - 12) // 7
